@@ -57,16 +57,16 @@ class ProjectSerializer(serializers.ModelSerializer):
         
         packages = validated_data["packages"]
         projeto = Project.objects.create(name=validated_data["name"])       
-        dic_pack = {}
+        listPack = []
         leng_pack = len(packages)
         i = 0
         while i < leng_pack:
-            if (packages[i]['name'], packages[i]['version']) in dic_pack.items():
+            if  packages[i]['name'] in listPack:
                 projeto.delete()
                 raise serializers.ValidationError("Pacote com o mesmo nome")
             else:
                 package = PackageRelease.objects.create(name=packages[i]['name'], version=packages[i]['version'], project=projeto)
-                dic_pack[packages[i]['name']] = packages[i]['version']
+                listPack.append(packages[i] ["name"])
                 i += 1
         
         projeto.save()
